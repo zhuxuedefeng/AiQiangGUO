@@ -1,0 +1,16 @@
+{
+  "assets": [],
+  "build": {
+    "build_id": "4B6A1D79-158",
+    "build_number": 158,
+    "build_time": 1608028692340
+  },
+  "useFeatures": [],
+  "icon": "res/logo.png",
+  "main": "main.js",
+  "name": "Ai强国",
+  "packageName": "com.AiQiangGuo",
+  "scripts": {},
+  "versionCode": 1,
+  "versionName": "2.19.0.2020.12.12"
+}
