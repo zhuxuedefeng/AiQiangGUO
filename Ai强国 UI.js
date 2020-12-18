@@ -17,9 +17,9 @@ importClass(android.database.sqlite.SQLiteDatabase);
 
 /**修改版
  * @Description: Auto.js AiQiangGuo 1+(12)+(6+6)+5+6+2+1+(1+1)+1=42分
- * @version: 2.16-2020.10
+ * @version: 2.19-2020.12
  * @Author: fengwuying
- * @Date: 2020-10
+ * @Date: 2020-12
  */
  //原始代码来自ivanwhaf 基于播报按钮进行判断点击来自chongyadong 基于题目对比答题来自Ivan-cn。另有部分代码移植自lolisaikou
 //版本号命名规则：学习强国版本号-年月，如遇本月有重大升级，增加日期。小版本迭代不变，
@@ -1831,10 +1831,20 @@ function challengeQuestionLoop(conNum) {
     {
         let listArray = className("ListView").findOnce().children();//题目选项列表
         let i = random(0, listArray.length - 1);
-        console.log("本轮次数足够，随机点击答案");
+        console.log("本轮答题数足够，随机点击答案");
         var question = className("ListView").findOnce().parent().child(0).text();
         question = question.replace(/\s/g, "");
-        if (question == ZiXingTi.replace(/\s/g, "") || question == DuYinTi.replace(/\s/g, "")) {
+        var options = [];//选项列表
+       if (className("ListView").exists()) {
+         className("ListView").findOne().children().forEach(child => {
+            var answer_q = child.child(0).child(1).text();
+            options.push(answer_q);
+          });
+        } else {
+        console.error("答案获取失败!");
+        return;
+        }//20201217添加 极低概率下，答题数足够，下一题随机点击，碰到字形题
+        if (question == ZiXingTi.replace(/\s/g, "") || question == DuYinTi.replace(/\s/g, "") || question == ErShiSiShi.replace(/\s/g, "")) {
          question = question + options[0]; //字形题 读音题 在题目后面添加第一选项               
                 }
         console.log((conNum + 1).toString() + ".随机点击题目：" + question);
