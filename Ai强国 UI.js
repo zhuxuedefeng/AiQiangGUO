@@ -281,7 +281,7 @@ ui.stop.click(function () {
 
 ui.about.click(function () {
  alert("使用说明",
-        "AiQiangGuo Ver 2.19-2020.12.12 \n 〇程序需要 悬浮窗 和 无障碍权限（设置→辅助功能→无障碍→本 APP）\n 〇程序工作原理为模拟点击，基于Auto.js框架+JavaScript脚本执行 \n 〇程序不支持每周答题，专项答题，订阅。争上游答题和双人对战随机点击不保证正确，正常执行完毕42分（可执行前手动答题，答题完毕学习强国请返回主界面; 也可执行中手动辅助答题，以手动点击为准） \n 〇积分判断执行：读取今日积分确定需执行任务，任务精准，但部分手机可能不支持(积分获取正常推荐使用) \n 〇循序依次执行：预置每日积分所需执行任务数，不判断积分，依次执行所有任务(积分获取返回null或报错使用) \n ◎请确保进入学习强国时位于 主界面，模拟点击从主界面开始 \n ◎因存在文章误点击视频，多次重复点击同一文章视频问题，有概率造成执行完毕积分不足，请补学 \n ◎安卓版本低于安卓7，无法执行收藏评论转发，文章界面模拟滑动 \n ◎测试机型：Redmi 6，Android 9，MiUI 11开发版 \n ★代码基于以下项目实现：Auto.js https://github.com/hyb1996/Auto.js \n LazyStudy https://github.com/lolisaikou/LazyStudy  \n AutoLearnChina https://github.com/gzhjic/LearnChinaHelper \n XXQG-Helper https://github.com/ivanwhaf/xxqg-helper \n ●免责声明：本程序只供个人学习Auto.js使用，不得盈利传播，不得用于违法用途，否则造成的一切后果自负！"
+        "AiQiangGuo Ver 2.19-2020.12.12 \n 〇程序需要 悬浮窗 和 无障碍权限（设置→辅助功能→无障碍→本 APP）\n 〇程序工作原理为模拟点击，基于Auto.js框架+JavaScript脚本执行 \n 〇程序不支持每周答题，专项答题，订阅。正常执行完毕42分（可执行前手动答题，答题完毕学习强国请返回主界面; 也可执行中手动辅助答题，以手动点击为准） \n 〇积分判断执行：读取今日积分确定需执行任务，任务精准，但部分手机可能不支持(积分获取正常推荐使用) \n 〇循序依次执行：预置每日积分所需执行任务数，不判断积分，依次执行所有任务(积分获取返回null或报错使用) \n ◎请确保进入学习强国时位于 主界面，模拟点击从主界面开始 \n ◎因存在文章误点击视频，多次重复点击同一文章视频问题，有概率造成循环执行，请手动补学 \n ◎安卓版本低于安卓7，无法执行收藏评论转发，文章界面模拟滑动 \n ◎测试机型：Redmi 6，Android 9，MiUI 11开发版 \n ★代码基于以下项目实现：Auto.js https://github.com/hyb1996/Auto.js \n LazyStudy https://github.com/lolisaikou/LazyStudy  \n AutoLearnChina https://github.com/gzhjic/LearnChinaHelper \n XXQG-Helper https://github.com/ivanwhaf/xxqg-helper \n ●免责声明：本程序只供个人学习Auto.js使用，不得盈利传播，不得用于违法用途，否则造成的一切后果自负！"
          )
          });
 
@@ -1194,11 +1194,106 @@ function localChannel1() {
 
 
 /**
-@description: 学习平台订阅
+@description: 学习平台订阅 旧版本
 @param: null
 @return: null
 */
-function sub() {
+function sub1() {
+    while (!id("home_bottom_tab_button_work").exists());//等待加载出主页
+    id("home_bottom_tab_button_work").findOne().click();//点击主页正下方的"学习"按钮
+    delay(2);
+    click("订阅");
+    delay(2);
+    click("添加");
+    delay(2);
+    click("学习平台", 0); // text("学习平台").findOne().click() == click("学习平台", 0) 解决订阅问题
+    delay(0.5)
+    click("强国号", 0)
+    let sublist = className("ListView").findOnce(0);
+    var i = 0;
+    while (i < asub) {
+        let object = desc("订阅").find();
+        if (!object.empty()) {
+            object.forEach(function (currentValue) {
+                if (currentValue && i < asub) {
+                    let like = currentValue.parent()
+                    if (like.click()) {
+                        console.log("订阅成功");
+                        i++;
+                        delay(2);
+                    } else {
+                        console.error("订阅失败");
+                    }
+                }
+            })
+        } else if (text("你已经看到我的底线了").exists()) {
+            console.log("尝试订阅学习平台")
+            back();
+            delay(1);
+            click("添加");
+            delay(1);
+            click("学习平台", 0);
+            delay(2);
+            let sublist = className("ListView").findOnce(1);
+            while (i < asub) {
+                let object = desc("订阅").find();
+                if (!object.empty()) {
+                    object.forEach(function (currentValue) {
+                        if (currentValue && i < asub) {
+                            let like = currentValue.parent()
+                            if (like.click()) {
+                                console.log("订阅成功");
+                                i++;
+                                delay(2);
+                            } else {
+                                console.error("订阅失败");
+                            }
+                        }
+                    })
+                } else if (text("你已经看到我的底线了").exists()) {
+                    console.log("没有可订阅的强国号了,退出!!!")
+                    back();
+                    delay(2);
+                    return;
+                } else {
+                    delay(1);
+                    sublist.scrollForward();
+                }
+            }
+        } else {
+            delay(1);
+            sublist.scrollForward();
+        }
+    }
+    back();
+    delay(2);
+}
+
+/**
+@description: 学习平台订阅 新版本
+@param: null
+@return: null
+*/
+/*if (ui.sub_quiz.isChecked()) {
+        if (myScores["订阅"][0] < myScores["订阅"][1]) {
+            if (getPackageVersion("cn.xuexi.android") <= "2.18.1") {
+                console.log("----------------------------");
+                console.info("开始执行订阅任务");
+                sub();
+                console.info("订阅任务已完成！");
+            }
+            else {
+                console.info("订阅任务未适配该强国版本，跳过！");
+                delay(1);
+            }
+        }
+        else {
+            console.info("订阅任务已完成！");
+            delay(1);
+        }
+    }*/
+
+function sub2() {
     while (!id("home_bottom_tab_button_work").exists());//等待加载出主页
     id("home_bottom_tab_button_work").findOne().click();//点击主页正下方的"学习"按钮
     delay(2);
@@ -1353,7 +1448,17 @@ function zsyQuestion() {
     if(className("android.view.View").text("开始比赛").exists()){
       className("android.view.View").text("开始比赛").findOne().click();
       }
-     delay(6);     
+      delay(3);
+    if (className("android.widget.Button").text("知道了").exists() || className("android.view.View").text("温馨提示").exists() || className("android.view.View").text("您已超过今日对战次数，请明日再来。").exists() ){
+       console.log("今日已完成30次对战，请明日再来");
+        back(); delay(1);
+        back(); delay(1);
+        back(); delay(1);
+       if (id("my_display_name").exists()){//我的主页，再退一步回主页
+         back(); delay(1); } //单纯back有概率退出但又有可能只退到我的页面 故加判断
+        return;
+     }   
+     delay(3);     
     let zNum = 0;//轮数
     while (true) {
         if (className("android.view.View").text("继续挑战").exists() || textContains("继续挑战").exists())//遇到继续挑战，则本局结束
@@ -1380,14 +1485,24 @@ function zsyQuestion() {
           className("android.view.View").text("答题练习").findOne().parent().child(8).click();
           console.log("开始争上游答题")
           delay(2);
-          if(className("android.view.View").text("开始比赛").exists()){
+          if (className("android.view.View").text("开始比赛").exists()){
             className("android.view.View").text("开始比赛").findOne().click();
-            }                
-           delay(6);
-         } 
+            }
+          delay(3);
+        if (className("android.widget.Button").text("知道了").exists() || className("android.view.View").text("温馨提示").exists() || className("android.view.View").text("您已超过今日对战次数，请明日再来。").exists() ){
+          console.log("今日已完成30次对战，请明日再来");
+           back(); delay(1);
+           back(); delay(1);
+           back(); delay(1);
+          if (id("my_display_name").exists()){//我的主页，再退一步回主页
+            back(); delay(1); } //单纯back有概率退出但又有可能只退到我的页面 故加判断
+          return;
+         }   
+         delay(3);
+       } 
         console.warn("第" + (zNum + 1).toString() + "轮开始...")
         }
-       if (textContains("距离答题结束").exists() && !text("继续挑战").exists()){
+       if (/*textContains("距离答题结束").exists() &&*/ !text("继续挑战").exists()){ //20201225答题界面变化 距离答题结束 删除
         zsyQuestionLoop();
         }
     }
@@ -1422,8 +1537,18 @@ function SRQuestion() {
     delay(1);
     if(className("android.view.View").text("开始对战").exists()){
     className("android.view.View").text("开始对战").findOne().click();
-      }     
-     delay(6);     
+      }
+    delay(3);
+    if (className("android.widget.Button").text("知道了").exists() || className("android.view.View").text("温馨提示").exists() || className("android.view.View").text("您已超过今日对战次数，请明日再来。").exists() ){
+       console.log("今日已完成30次对战，请明日再来");
+        back(); delay(1);
+        back(); delay(1);
+        back(); delay(1);
+       if (id("my_display_name").exists()){//我的主页，再退一步回主页
+         back(); delay(1); } //单纯back有概率退出但又有可能只退到我的页面 故加判断
+        return;
+     }   
+     delay(3);    
     let zNum = 1;//轮数
     while (true) {
       if (className("android.view.View").text("继续挑战").exists() || textContains("继续挑战").exists())//遇到继续挑战，则本局结束
@@ -1440,6 +1565,8 @@ function SRQuestion() {
                 }
                 back(); delay(1);
                 back(); delay(1);
+                if (id("my_display_name").exists()){//我的主页，再退一步回主页
+               back(); delay(1); } //单纯back有概率退出但又有可能只退到我的页面 故加判断
                 break;
             } else {
                 console.log("即将开始下一轮...")
@@ -1462,12 +1589,22 @@ function SRQuestion() {
                delay(1);
                if(className("android.view.View").text("开始对战").exists()){
                className("android.view.View").text("开始对战").findOne().click();
-                }     
-               delay(6);     
-             } 
+                }
+              delay(3);
+              if (className("android.widget.Button").text("知道了").exists() || className("android.view.View").text("温馨提示").exists() || className("android.view.View").text("您已超过今日对战次数，请明日再来。").exists() ){
+                 console.log("今日已完成30次对战，请明日再来");
+                 back(); delay(1);
+                 back(); delay(1);
+                 back(); delay(1);
+              if (id("my_display_name").exists()){//我的主页，再退一步回主页
+                back(); delay(1); } //单纯back有概率退出但又有可能只退到我的页面 故加判断
+               return;
+             }   
+              delay(3);     
+            } 
             console.warn("第" + zNum.toString() + "轮开始...")
          }
-     if (textContains("距离答题结束").exists() && !text("继续挑战").exists()){
+     if (/*textContains("距离答题结束").exists() &&*/ !text("继续挑战").exists()){ //20201225界面变化 距离答题结束 删除
         zsyQuestionLoop();
         }
     }
@@ -1483,8 +1620,8 @@ function zsyQuestionLoop() {
     let ClickAnswer;
  try{//20201025使用try catch(e)语句处理错误，去除前后置0.5s延时   
    /*delay(0.5);*///4-0.5，前置0.5延时判断结束标志
-  if (!className("RadioButton").exists() || className("android.view.View").text("继续挑战").exists() || textContains("继续挑战").exists() || !textContains("距离答题结束").exists()){//不存在本局结束标志 继续挑战，则执行  
-     console.info("答题结束!");
+  if (!className("RadioButton").exists() || className("android.view.View").text("继续挑战").exists() || textContains("继续挑战").exists() /*|| !textContains("距离答题结束").exists()*/){//不存在本局结束标志 继续挑战，则执行  20201225界面变化，距离答题结束 删除
+     /*console.info("答题结束!");*/ //配合20201225界面变化 距离答题结束 去除，本语句去除
      return;
   } else {
     while(!className("RadioButton").exists());//@KB64ba建议使用while判断
@@ -1592,8 +1729,8 @@ function zsyQuestionLoop() {
   //delay(3.5);//后置3.5延时与前置0.5构成4s延时
  }catch (e){
      delay(3);
-   if (!className("RadioButton").exists() || className("android.view.View").text("继续挑战").exists() || textContains("继续挑战").exists() || !textContains("距离答题结束").exists()){//不存在本局结束标志 继续挑战，则执行  
-     console.info("答题结束!");
+   if (!className("RadioButton").exists() || className("android.view.View").text("继续挑战").exists() || textContains("继续挑战").exists() /*|| !textContains("距离答题结束").exists()*/){//不存在本局结束标志 继续挑战，则执行  
+     /*console.info("答题结束!");*/ //配合20201225界面变化 距离答题结束 删除，本语句删除
      return;
     }  
   }   
@@ -1603,8 +1740,8 @@ function zsyQuestionLoop() {
 function zsyQuestionLoop1() {
     //delay(1);
     let ClickAnswer;
-    if (!className("RadioButton").exists() || className("android.view.View").text("继续挑战").exists() || textContains("继续挑战").exists() || !textContains("距离答题结束").exists()){//不存在本局结束标志 继续挑战，则执行  
-     console.info("答题结束!");
+    if (!className("RadioButton").exists() || className("android.view.View").text("继续挑战").exists() || textContains("继续挑战").exists() /*|| !textContains("距离答题结束").exists()*/){//不存在本局结束标志 继续挑战，则执行  
+    /* console.info("答题结束!");*/
       return;
     } else {
         while (!className("RadioButton").exists());//@KB64ba建议使用while判断
@@ -1656,7 +1793,7 @@ function zsyQuestionLoop1() {
                     optionStr[i] = options[i].substring(3);
                 }
                 var optionStr = options.join("");
-                question = question + optionStr;//Ivan-cn原版代码，会造成搜题失败，不掐头去尾正确率更高
+                question = question + optionStr;//Ivan-cn原版代码，会造成搜题失败，不掐头去尾正确率更高 后续：该部分应当配合题库使用
                 /*question = question.substr(1);//开头删除一个字
                 question = question.substr(0, question.length - 1);//结尾删除一个字，增加搜索的准确率
             } else {
@@ -1726,6 +1863,7 @@ function zsyQuestionLoop1() {
         delay(1);
     }
 }
+
 /**
  * @description: 挑战答题
  * @param: null
