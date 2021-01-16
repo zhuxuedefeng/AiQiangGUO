@@ -1161,6 +1161,7 @@ function Comment(i) {
  */
 //基于控件点击 20200911 部分手机 本地在频道列表为控件3 但部分为控件14，可点击后基于切换地区判断。
 //20201020如果在综合页面进入本地，则识别不到新思想，因此改基于综合判断。20201022 山东省界面更新频道内控件3会跳转外部链接故改0
+//20210116 控件14改动为15，控件3有无变动未知
 function localChannel1() {
     while (!id("home_bottom_tab_button_work").exists());//等待加载出主页
     id("home_bottom_tab_button_work").findOne().click();//点击主页正下方的"学习"按钮
@@ -1177,7 +1178,7 @@ function localChannel1() {
        back();
        className("android.widget.TextView").text("综合").findOne().parent().parent().child(0).click();
        }else{
-       className("android.widget.TextView").text("综合").findOne().parent().parent().child(14).click(); 
+       className("android.widget.TextView").text("综合").findOne().parent().parent().child(15).click(); //14 15
        delay(2);
        className("android.support.v7.widget.RecyclerView").findOne().child(0).click();
        delay(2);
@@ -1436,9 +1437,9 @@ function zsyQuestion() {
       delay(1);
       click("我要答题");
     }else {
-      (!text("我要答题").exists());
+     (!text("我要答题").exists());
       delay(1);
-      text("我要答题").click();
+      text("我要答题").findOne().parent().click();
       }
     while (!text("答题练习").exists());//可用词：排行榜 答题竞赛
     delay(1);
@@ -1524,7 +1525,7 @@ function SRQuestion() {
       } else {
      (!text("我要答题").exists());
     delay(1);
-    text("我要答题").click();
+    text("我要答题").findOne().parent().click();
      }
     while (!text("答题练习").exists());//可用词：排行榜 答题竞赛
     delay(1);
@@ -1532,11 +1533,14 @@ function SRQuestion() {
     console.log("开始双人对战")
     delay(2);
     if(className("android.view.View").text("邀请对手").exists()){
-    className("android.view.View").text("邀请对手").findOne().parent().child(0).click();
-      }
+     className("android.view.View").text("邀请对手").findOne().parent().child(0).click();
+      }//原为随机邀请对手
+     if(className("android.view.View").text("随机匹配").exists()){
+     className("android.view.View").text("随机匹配").findOne().parent().child(0).click();
+      }//20200125修改为邀请好友&随机匹配
     delay(1);
     if(className("android.view.View").text("开始对战").exists()){
-    className("android.view.View").text("开始对战").findOne().click();
+     className("android.view.View").text("开始对战").findOne().click();
       }
     delay(3);
     if (className("android.widget.Button").text("知道了").exists() || className("android.view.View").text("温馨提示").exists() || className("android.view.View").text("您已超过今日对战次数，请明日再来。").exists() ){
@@ -1575,8 +1579,8 @@ function SRQuestion() {
                 back();
                 delay(1);
                 if (textContains("退出").exists()){
-                className("android.widget.Button").text("退出").findOne().click();
-                delay(1);
+                 className("android.widget.Button").text("退出").findOne().click();
+                 delay(1);
                 }
                 while (!text("答题练习").exists());//排行榜 答题竞赛
                 delay(1);
@@ -1584,11 +1588,14 @@ function SRQuestion() {
                 console.log("开始双人对战");
                 delay(2);
                if(className("android.view.View").text("邀请对手").exists()){
-               className("android.view.View").text("邀请对手").findOne().parent().child(0).click();
-                 }
+                className("android.view.View").text("邀请对手").findOne().parent().child(0).click();
+               }//原为随机邀请对手
+               if(className("android.view.View").text("随机匹配").exists()){
+                className("android.view.View").text("随机匹配").findOne().parent().child(0).click();
+               }//20200125修改为邀请好友&随机匹配
                delay(1);
                if(className("android.view.View").text("开始对战").exists()){
-               className("android.view.View").text("开始对战").findOne().click();
+                className("android.view.View").text("开始对战").findOne().click();
                 }
               delay(3);
               if (className("android.widget.Button").text("知道了").exists() || className("android.view.View").text("温馨提示").exists() || className("android.view.View").text("您已超过今日对战次数，请明日再来。").exists() ){
@@ -1880,7 +1887,7 @@ function challengeQuestion() {
       } else {
       (!text("我要答题").exists());
       delay(1);
-      text("我要答题").click();
+      text("我要答题").findOne().parent().click();
       }
     if(!textContains("答题练习").exists()){
      while (!text("答题练习").exists());//排行榜 答题竞赛
@@ -2179,13 +2186,13 @@ function dailyQuestion() {
     delay(2);
     text("我的").click();
     if (!textContains("我要答题").exists()) {
-           delay(1);
-    click("我要答题");
-        } else {
-             (!text("我要答题").exists());
+     delay(1);
+     click("我要答题");
+    } else {
+     (!text("我要答题").exists());
     delay(1);
-    text("我要答题").click();
-        }
+    text("我要答题").findOne().parent().click();
+      }
     while (!text("每日答题").exists());
     delay(1);
     text("每日答题").click();
@@ -2226,9 +2233,17 @@ function weeklyQuestion() {
     let h1 = (h / 6) * 5;//纵坐标6分之5处
     let h2 = (h / 6);//纵坐标6分之1处
     text("我的").click();
-    while (!textContains("我要答题").exists());
+    if (!textContains("我要答题").exists()) {
+     delay(1);
+     click("我要答题");
+    } else {
+     (!text("我要答题").exists());
     delay(1);
-    click("我要答题");
+    text("我要答题").findOne().parent().click();
+      }
+    /*while (!textContains("我要答题").exists());
+    delay(1);
+    click("我要答题");*/
     while (!text("每周答题").exists());
     delay(1);
     text("每周答题").click();
@@ -2318,9 +2333,17 @@ function specialQuestion() {
     let h1 = (h / 6) * 5;//纵坐标6分之5处
     let h2 = (h / 6);//纵坐标6分之1处
     text("我的").click();
-    while (!textContains("我要答题").exists());
+    if (!textContains("我要答题").exists()) {
+     delay(1);
+     click("我要答题");
+    } else {
+     (!text("我要答题").exists());
     delay(1);
-    click("我要答题");
+    text("我要答题").findOne().parent().click();
+      }
+    /*while (!textContains("我要答题").exists());
+    delay(1);
+    click("我要答题");*/
     while (!text("专项答题").exists());
     delay(1);
     text("专项答题").click();
