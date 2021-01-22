@@ -30,12 +30,12 @@ var aCount = 12;//文章默认学习篇数
 var vCount = 7;//小视频默认学习个数
 var cCount = 2;//收藏+分享+评论次数
 
-var aTime = 30;//每篇文章学习-30秒 30*12≈360秒=6分钟
-var vTime = 60;//每个小视频学习60秒
+var aTime = 40;//每篇文章学习30秒 30*12≈360秒=6分钟
+var vTime = 70;//每个小视频学习60秒
 var rTime = 360;//音视频时长-6分钟
 
 var dyNum = 2;//订阅 2
-var commentText = ["支持党，支持国家！", "为实现中华民族伟大复兴而不懈奋斗！", "不忘初心，牢记使命"];//评论内容，可自行修改，大于5个字便计分
+var commentText = ["学习签到！", "努力奋斗！", "好好学习，天天向上！"];//评论内容，可自行修改，大于5个字便计分
 var num = random(0, commentText.length - 1) ;//随机数    
 
 var aCat = ["推荐","要闻","综合"];
@@ -45,12 +45,12 @@ var date_string = getTodayDateString();//获取当天日期字符串
 var vCat = ["第一频道", "学习视频", "联播频道"];
 var vCatlog = vCat[num] ; //视频学习类别，随机取 "第一频道"、"学习视频"、"联播频道"
 if (num == 0){
-             var s = "央视网";
-             }else if (num == 1){
-             var s = "央视新闻";
-             }else {
-             var s = "中央广播电视总台";
-             }
+    var s = "央视网";
+}else if (num == 1){
+    var s = "央视新闻";
+}else {
+    var s = "中央广播电视总台";
+}
  
 var lCount = 1;//挑战答题轮数
 var qCount = random(5, 7);//挑战答题每轮答题数(5~7随机)
@@ -74,7 +74,7 @@ ui.layout(
         <button id="cq" h="50" text="挑战答题" />
         <button id="dq" h="50" text="每日答题" />
         <button id="sr" h="50" text="双人对战" />
-       <button id="zsy" h="50" text="争上游答题" />
+        <button id="zsy" h="50" text="争上游答题" />
         <button id="stop" h="50" text="停止运行" />
        
        <horizontal>
@@ -255,7 +255,7 @@ ui.stop.click(function () {
     }
 });
 
-/*ui.update.click(function () {//在线更新题库
+ui.update.click(function () {//在线更新题库
     if (thread != null && thread.isAlive()) {
         alert("注意!", "当前程序正在运行，请结束之前进程");
         return;
@@ -277,7 +277,7 @@ ui.stop.click(function () {
          exit();
         }
     });
-});*/
+});
 
 ui.about.click(function () {
  alert("使用说明",
@@ -881,7 +881,7 @@ function videoStudy_news() {
  * @return: null
  */
 function video_timing_news(n, seconds) {
-    seconds = seconds + random(0,10);
+    seconds = seconds + random(0,50);
     for (var i = 0; i < seconds; i++) {
         if (desc("继续播放")){
         click("继续播放");
@@ -959,7 +959,7 @@ function videoStudy_bailing(vCount, vTime) {
  * @return: null
  */
 function video_timing_bailing(n, seconds) {
-    seconds = seconds + random(0,10);
+    seconds = seconds + random(0,50);
     for (var i = 0; i < seconds; i++) {
         if (desc("继续播放")){
         click("继续播放");
@@ -1031,7 +1031,7 @@ function listenToRadio() {
  * @return: null
  */
 function radio_timing(r_time, seconds) {
-    seconds = seconds + random(0,10);
+    seconds = seconds + random(0,50);
     for (var i = 0; i < seconds; i++) {
         delay(1);
         if (i % 5 == 0)//每5秒打印一次信息
@@ -1713,12 +1713,14 @@ function zsyQuestionLoop() {
             var listDescStra = item.child(0).child(1).text();
             var listDescStrb = listDescStra.substring(3);//选项去除A.B.C.D.再与answer对比
             if (listDescStrb == answer) {
+
                 item.child(0).click();//点击答案
                 hasClicked = true;
                 console.log("---------------------------");
              }
            });
         }
+        delay(1);
      }
     if (!hasClicked)//如果没有点击成功
      {
@@ -1993,7 +1995,7 @@ function challengeQuestionLoop(conNum) {
          question = question + options[0]; //字形题 读音题 在题目后面添加第一选项               
                 }
         console.log((conNum + 1).toString() + ".随机点击题目：" + question);
-        delay(random(0.5, 1));//随机延时0.5-1秒
+        delay(random(0.5, 3));//随机延时0.5-1秒
         listArray[i].child(0).click();//随意点击一个答案
         ClickAnswer = listArray[i].child(0).child(1).text();;//记录已点击答案
         console.log("随机点击:"+ClickAnswer);
@@ -2015,7 +2017,7 @@ function challengeQuestionLoop(conNum) {
         let listArray = className("ListView").findOnce().children();//题目选项列表
         let i = random(0, listArray.length - 1);
         console.log("随机点击");
-        delay(random(0.5, 1));//随机延时0.5-1秒
+        delay(random(0.5,3));//随机延时0.5-1秒
         listArray[i].child(0).click();//随意点击一个答案
         return;
     }
@@ -2054,7 +2056,7 @@ function challengeQuestionLoop(conNum) {
     {
         let i = random(0, listArray.length - 1);
         console.error("没有找到答案，随机点击");
-        delay(random(0.5, 1));//随机延时0.5-1秒
+        delay(random(0.5, 3));//随机延时0.5-1秒
         listArray[i].child(0).click();//随意点击一个答案
         ClickAnswer = listArray[i].child(0).child(1).text();;//记录已点击答案
         hasClicked = true;
@@ -2072,10 +2074,10 @@ function challengeQuestionLoop(conNum) {
         listArray.forEach(item => {
             var listDescStr = item.child(0).child(1).text();
             if (listDescStr == answer) {
-                delay(random(0.5, 1));//随机延时0.5-1秒
+                delay(random(0.5, 3));//随机延时0.5-1秒
                 item.child(0).click();//点击答案
                 hasClicked = true;
-                delay(0.5);//等待0.5秒，是否出现X
+                delay(2);//等待0.5秒，是否出现X
               if (!text("v5IOXn6lQWYTJeqX2eHuNcrPesmSud2JdogYyGnRNxujMT8RS7y43zxY4coWepspQkvw" +
             "RDTJtCTsZ5JW+8sGvTRDzFnDeO+BcOEpP0Rte6f+HwcGxeN2dglWfgH8P0C7HkCMJOAAAAAElFTkSuQmCC").exists() || text("再来一局").exists())//遇到❌号，则答错了,不再通过结束本局字样判断
              { console.log("题库答案正确……"); }          
@@ -2092,10 +2094,10 @@ function challengeQuestionLoop(conNum) {
     {//因导致不能成功点击问题较多，故该部分不更新题库，大部分问题是题库题目适配为填空题或多选题或错误选项
         console.error("未能成功点击，随机点击");
         let i = random(0, listArray.length - 1);
-        delay(random(0.5, 1));//随机延时0.5-1秒
+        delay(random(0.5, 3));//随机延时0.5-1秒
         listArray[i].child(0).click();//随意点击一个答案
         console.log("随机点击:"+ClickAnswer);
-        delay(0.5);//等待0.5秒，是否出现X
+        delay(2);//等待0.5秒，是否出现X
        if (!text("v5IOXn6lQWYTJeqX2eHuNcrPesmSud2JdogYyGnRNxujMT8RS7y43zxY4coWepspQkvw" +
             "RDTJtCTsZ5JW+8sGvTRDzFnDeO+BcOEpP0Rte6f+HwcGxeN2dglWfgH8P0C7HkCMJOAAAAAElFTkSuQmCC").exists() || text("再来一局").exists())//遇到❌号，则答错了,不再通过结束本局字样判断
         { console.log("随机点击正确……"); }          
@@ -2540,20 +2542,20 @@ function dailyQuestionLoop() {
            }
         } else {
             console.info("答案：" + ansTiku);
-            delay(random(0.5, 1));//随机延时0.5-1秒
+            delay(random(0.5, 3));//随机延时0.5-1秒
             clickByAnswer(answer);
         }
    }
-    delay(random(0.5, 1));//随机延时0.5-1秒
+    delay(random(0.5, 3));//随机延时0.5-1秒
     if (text("确定").exists()) {//每日每周答题
         text("确定").click();
-       delay(random(0.5, 1));//随机延时0.5-1秒
+       delay(random(0.5, 3));//随机延时0.5-1秒
     } else if (text("下一题").exists()) {//专项答题
             text("下一题").click();
-            delay(random(0.5, 1));//随机延时0.5-1秒
+            delay(random(0.5, 3));//随机延时0.5-1秒
      }else if (text("完成").exists()) {//专项答题最后一题
             text("完成").click();
-           delay(random(0.5, 1));//随机延时0.5-1秒
+           delay(random(0.5, 3));//随机延时0.5-1秒
       } else{
         console.warn("未找到右上角按钮，尝试根据坐标点击");
         click(device.width * 0.85, device.height * 0.06);//右上角确定按钮，根据自己手机实际修改
