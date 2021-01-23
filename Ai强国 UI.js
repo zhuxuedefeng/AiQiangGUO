@@ -255,29 +255,29 @@ ui.stop.click(function () {
     }
 });
 
-ui.update.click(function () {//在线更新题库
-    if (thread != null && thread.isAlive()) {
-        alert("注意!", "当前程序正在运行，请结束之前进程");
-        return;
-    }
-    confirm("确认更新在线题库吗?")
-    .then(c => {
-        if(c){
-            console.show();
-            thread = threads.start(function () {
-          try {
-            updateTikunet();
-            } catch (e) {
-             alert("在线更新题库出错！");
-             }
-            });
-         threads.shutDownAll();
-         console.hide();
-         engines.stopAll();
-         exit();
-        }
-    });
-});
+//ui.update.click(function () {//在线更新题库
+//    if (thread != null && thread.isAlive()) {
+//        alert("注意!", "当前程序正在运行，请结束之前进程");
+//        return;
+//    }
+//    confirm("确认更新在线题库吗?")
+//    .then(c => {
+//        if(c){
+//            console.show();
+//            thread = threads.start(function () {
+//          try {
+//            updateTikunet();
+//            } catch (e) {
+//             alert("在线更新题库出错！");
+//             }
+//            });
+//         threads.shutDownAll();
+//         console.hide();
+//         engines.stopAll();
+//         exit();
+//        }
+//    });
+//});
 
 ui.about.click(function () {
  alert("使用说明",
