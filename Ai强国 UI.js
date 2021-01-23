@@ -30,8 +30,8 @@ var aCount = 12;//文章默认学习篇数
 var vCount = 7;//小视频默认学习个数
 var cCount = 2;//收藏+分享+评论次数
 
-var aTime = 30;//每篇文章学习-30秒 30*12≈360秒=6分钟
-var vTime = 60;//每个小视频学习60秒
+var aTime = 40;//每篇文章学习30秒 30*12≈360秒=6分钟
+var vTime = 70;//每个小视频学习60秒
 var rTime = 360;//音视频时长-6分钟
 
 var dyNum = 2;//订阅 2
@@ -255,7 +255,7 @@ ui.stop.click(function () {
     }
 });
 
-/*ui.update.click(function () {//在线更新题库
+ui.update.click(function () {//在线更新题库
     if (thread != null && thread.isAlive()) {
         alert("注意!", "当前程序正在运行，请结束之前进程");
         return;
@@ -277,7 +277,7 @@ ui.stop.click(function () {
          exit();
         }
     });
-});*/
+});
 
 ui.about.click(function () {
  alert("使用说明",
@@ -881,7 +881,7 @@ function videoStudy_news() {
  * @return: null
  */
 function video_timing_news(n, seconds) {
-    seconds = seconds + random(0,10);
+    seconds = seconds + random(0,50);
     for (var i = 0; i < seconds; i++) {
         if (desc("继续播放")){
         click("继续播放");
@@ -959,7 +959,7 @@ function videoStudy_bailing(vCount, vTime) {
  * @return: null
  */
 function video_timing_bailing(n, seconds) {
-    seconds = seconds + random(0,10);
+    seconds = seconds + random(0,50);
     for (var i = 0; i < seconds; i++) {
         if (desc("继续播放")){
         click("继续播放");
@@ -1714,12 +1714,14 @@ function zsyQuestionLoop() {
             var listDescStra = item.child(0).child(1).text();
             var listDescStrb = listDescStra.substring(3);//选项去除A.B.C.D.再与answer对比
             if (listDescStrb == answer) {
+
                 item.child(0).click();//点击答案
                 hasClicked = true;
                 console.log("---------------------------");
              }
            });
         }
+        delay(1);
      }
     if (!hasClicked)//如果没有点击成功
      {
