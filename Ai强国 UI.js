@@ -1660,6 +1660,10 @@ function zsyQuestionLoop() {
     if (chutiIndex != -1) {
         question = question.substring(0, chutiIndex - 2);
       }
+	var laiyuanIndex = question.lastIndexOf("来源：");
+	if (laiyuanIndex != -1) {
+		question = question.substring(0, laiyuanIndex);
+	}
       question = question.replace(/\s/g, "");
     var options = [];//选项列表
    if (className("RadioButton").exists()) {
@@ -1779,6 +1783,10 @@ function zsyQuestionLoop1() {
         if (chutiIndex != -1) {
             question = question.substring(0, chutiIndex - 2);
         }
+		var laiyuanIndex = question.lastIndexOf("来源：");
+		if (laiyuanIndex != -1) {
+			question = question.substring(0, laiyuanIndex);
+		}
         question = question.replace(/\s/g, "");
         var options = [];//选项列表
         if (className("RadioButton").exists()) {
