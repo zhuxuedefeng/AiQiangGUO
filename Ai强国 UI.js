@@ -62,6 +62,7 @@ var myScores = {};//分数
 var ZiXingTi = "选择词语的正确词形。"; //字形题
 var DuYinTi = "选择正确的读音。";//读音题 20201211
 var ErShiSiShi ="下列不属于二十四史的是。";//二十四史
+var XinZiXing = "下列词形正确的是。";
 
 var customize_flag = false;//自定义运行标志
 
@@ -1676,7 +1677,7 @@ function zsyQuestionLoop() {
         return;
     }
   if (aquestion != oldaquestion){     
-     if (question == ZiXingTi.replace(/\s/g, "") || question == DuYinTi.replace(/\s/g, "") || question == ErShiSiShi.replace(/\s/g, "")) {
+     if (question == XinZiXing.replace(/\s/g, "") || question == ZiXingTi.replace(/\s/g, "") || question == DuYinTi.replace(/\s/g, "") || question == ErShiSiShi.replace(/\s/g, "")) {
       question = question + options[0].substring(3); //字形题 读音题 二十四史 在题目后面添加第一选项，选项带A.去除               
                 }
       console.log(aquestion.substring(0,2) + "题目:" + question);          
@@ -1816,7 +1817,7 @@ function zsyQuestionLoop1() {
                 question = question.substr(0, question.length - 1);*/ //结尾删除一个字，增加搜索的准确率
             }
             console.log(aquestion.substring(0, 2) + "题目:" + question);
-             if (question == ZiXingTi.replace(/\s/g, "") || question == DuYinTi.replace(/\s/g, "")|| question == ErShiSiShi.replace(/\s/g, "")) {
+             if (question == XinZiXing.replace(/\s/g, "") || question == ZiXingTi.replace(/\s/g, "") || question == DuYinTi.replace(/\s/g, "")|| question == ErShiSiShi.replace(/\s/g, "")) {
                 question = question + options[0].substring(3); //字形题 读音题 在题目后面添加第一选项，选项带A.去除               
                 }
             var answer = getAnswer(question, 'tiku');
@@ -1997,7 +1998,7 @@ function challengeQuestionLoop(conNum) {
         console.error("答案获取失败!");
         return;
         }//20201217添加 极低概率下，答题数足够，下一题随机点击，碰到字形题
-        if (question == ZiXingTi.replace(/\s/g, "") || question == DuYinTi.replace(/\s/g, "") || question == ErShiSiShi.replace(/\s/g, "")) {
+        if (question == XinZiXing.replace(/\s/g, "") || question == ZiXingTi.replace(/\s/g, "") || question == DuYinTi.replace(/\s/g, "") || question == ErShiSiShi.replace(/\s/g, "")) {
          question = question + options[0]; //字形题 读音题 在题目后面添加第一选项               
                 }
         console.log((conNum + 1).toString() + ".随机点击题目：" + question);
@@ -2042,7 +2043,7 @@ function challengeQuestionLoop(conNum) {
         console.error("答案获取失败!");
         return;
     }
-    if (question == ZiXingTi.replace(/\s/g, "") || question == DuYinTi.replace(/\s/g, "") || question == ErShiSiShi.replace(/\s/g, "")) {
+    if (question == XinZiXing.replace(/\s/g, "") || question == ZiXingTi.replace(/\s/g, "") || question == DuYinTi.replace(/\s/g, "") || question == ErShiSiShi.replace(/\s/g, "")) {
       question = question + options[0]; //字形题 读音题 在题目后面添加第一选项               
                 }
     console.log((conNum + 1).toString() + "搜库题目：" + question);
@@ -2530,7 +2531,7 @@ function dailyQuestionLoop() {
         return;
      }
     question = question.replace(/\s/g, "");
-    if (question == ZiXingTi.replace(/\s/g, "") || question == DuYinTi.replace(/\s/g, "") || question == ErShiSiShi.replace(/\s/g, "")) {
+    if (question == XinZiXing.replace(/\s/g, "") || question == ZiXingTi.replace(/\s/g, "") || question == DuYinTi.replace(/\s/g, "") || question == ErShiSiShi.replace(/\s/g, "")) {
       question = question + options[0]; //字形题 读音题 在题目后面添加第一选项                
                 }
     console.log("题目：" + question); 
